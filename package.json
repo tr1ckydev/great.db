@@ -1,0 +1,33 @@
+{
+  "name": "great.db",
+  "version": "1.0.0",
+  "description": "⚡ A powerful, human-friendly database library for JavaScript using SQLite.",
+  "main": "dist/index.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json"
+  },
+  "files": [
+    "dist",
+    "LICENSE",
+    "package.json"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tr1ckydev/great.db.git"
+  },
+  "keywords": [
+    "database",
+    "sqlite",
+    "bun"
+  ],
+  "author": "tr1ckydev",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tr1ckydev/great.db/issues"
+  },
+  "homepage": "https://github.com/tr1ckydev/great.db#readme",
+  "devDependencies": {
+    "bun-types": "^0.1.0"
+  }
+}
