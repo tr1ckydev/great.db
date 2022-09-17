@@ -28,6 +28,6 @@
   },
   "homepage": "https://github.com/tr1ckydev/great.db#readme",
   "devDependencies": {
-    "bun-types": "^0.1.0"
+    "bun-types": "^0.1.11"
   }
 }
