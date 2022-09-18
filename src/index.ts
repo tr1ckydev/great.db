@@ -1,7 +1,7 @@
 import Table from "./table.js";
 
 const SQLite = process.argv[0] === "bun"
-    ? require("bun:sqlite").default
+    ? require("bun:sqlite").default //@ts-ignore
     : (await import("better-sqlite3")).default;
 
 export namespace GreatDB {

@@ -10,7 +10,7 @@
 
 
 
-## Bun ? Node.js ? We got both.
+## Bun? Node.js? We got both.
 
 great.db automatically detects which runtime you are using and uses the respective fastest SQLite library available under the hood. One code base working differently on different runtimes to provide the best experience. Isn't that *great* ?
 
@@ -30,19 +30,19 @@ Done reading? Now, check out the [examples](https://github.com/tr1ckydev/great.d
 
 - ### Inserting/Updating data has never been easier
 
-  Insert or update data with a breeze through simple objects or maybe an array of them for multiple at a time. Learn more
+  Insert or update data with a breeze through simple objects or maybe an array of them for multiple at a time. [Learn more](https://github.com/tr1ckydev/great.db/blob/main/DOCUMENTATION.md#set-----promisevoid)
 
   ![](res/setdata.png)
 
 - ### Use schemas to describe shape of your table
 
-  Schema is a way to define how your table columns should be. Define your own schemas using various data types or use a built-in preset to quickly get started. Learn more
+  Schema is a way to define how your table columns should be. Define your own schemas using various data types or use a built-in preset to quickly get started. [Learn more](https://github.com/tr1ckydev/great.db/blob/main/DOCUMENTATION.md#schema)
 
   ![](res/schema.png)
 
 - ### Strong typescript support out of the box
 
-  Typescript types get auto magically inferred from the schema created to give auto-completions on the fly everywhere. Learn more
+  Typescript types get auto magically inferred from the schema created to give auto-completions on the fly everywhere.
 
   ![](res/autocomplete.png)
 

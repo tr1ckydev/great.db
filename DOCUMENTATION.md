@@ -1,19 +1,19 @@
 # Table of Contents
 
-- Installation
-- new Database()
-- Schema
-  - Schema#Create()
-  - Schema#Presets
+- [Installation](#installation)
+- [new Database()](#new-databaseconfig---greatdbdatabase)
+- [Schema](#schema)
+  - [Schema#Create()](#create--)
+  - [Schema#Presets](#presets)
 
-- Database#table()
-  - table#name - Name of the table
-  - table#set() - Insert/Update data to table
-  - table#get() - Retrieve data from table
-  - table#has() - Check if a value exists
-  - table#delete() - Delete row(s) based on a value
-  - table#toArray() -  Convert entire table to an array
-- Database#close()
+- [Database#table()](#databasetablename-schema---table)
+  - [table#name - Name of the table](#name---string)
+  - [table#set() - Insert/Update data to table](#set-----promisevoid)
+  - [table#get() - Retrieve data from table](#getkeyname-string-keyvalue---promiserowobject--null--undefined)
+  - [table#has() - Check if a value exists](#haskeyname-string-keyvalue---promiseboolean)
+  - [table#delete() - Delete row(s) based on a value](#deletekeyname-string-keyvalue---promisevoid)
+  - [table#toArray() -  Convert entire table to an array](#toarray---promisearrayofrowobjects)
+- [Database#close()](#databaseclose)
 
 
 
@@ -61,19 +61,19 @@ Schema is a way to define the columns and their datatypes of your table.
 
 ### .Create({ ... })
 
-Create a new schema with the column names along with their datatypes which will be later passed on to the Database#table.
+Create a new schema with the column names along with their datatypes which will be later passed on to the [Database#table](#databasetablename-schema---table).
 
 The following datatypes are available when creating a schema.
 
-| DataType               | Description                                                  |
-| :--------------------- | :----------------------------------------------------------- |
-| DataType.String        | A javascript string value.                                   |
-| DataType.Number        | A javascript numeric value supporting both Integers and Decimals. |
-| DataType.BigInt        | A javascript BigInt value.                                   |
-| *DataType.Boolean      | A javascript boolean value.                                  |
-| *DataType.Uint8Array   | A javascript Uint8Array  value.                              |
-| DataType.Buffer        | A javascript Buffer value.                                   |
-| DataType.AutoIncrement | An integer datatype which automatically increments whenever a new row is inserted into the table. |
+| DataType                 | Description                                                  |
+| :----------------------- | :----------------------------------------------------------- |
+| `DataType.String`        | A javascript string value.                                   |
+| `DataType.Number`        | A javascript numeric value supporting both Integers and Decimals. |
+| `DataType.BigInt`        | A javascript BigInt value.                                   |
+| *`DataType.Boolean`      | A javascript boolean value.                                  |
+| *`DataType.Uint8Array`   | A javascript Uint8Array  value.                              |
+| `DataType.Buffer`        | A javascript Buffer value.                                   |
+| `DataType.AutoIncrement` | An integer datatype which automatically increments whenever a new row is inserted into the table. |
 
 > DataTypes marked with an asterisk(*) only support `bun:sqlite` and do not work with `better-sqlite3`.
 
