@@ -18,14 +18,14 @@ await table.set([
 
 // Retrieving a value
 const x = await table.get("key", "John Doe");
-console.log(x.value);   // Obere Str. 57
+console.log(x?.value);   // Obere Str. 57
 
 // Updating an already present key with a different value
 await table.set({ key: "John Doe", value: "9 Hawthorne St." });
 
 // Retrieving the new value
 const y = await table.get("key", "John Doe");
-console.log(y.value);   // 9 Hawthorne St.
+console.log(y?.value);   // 9 Hawthorne St.
 
 // Closing the database after all tasks are done
 db.close();

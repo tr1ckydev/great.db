@@ -5,14 +5,13 @@
 - [Schema](#schema)
   - [Schema#Create()](#create--)
   - [Schema#Presets](#presets)
-
 - [Database#table()](#databasetablename-schema---table)
   - [table#name - Name of the table](#name---string)
   - [table#set() - Insert/Update data to table](#set-----promisevoid)
   - [table#get() - Retrieve data from table](#getkeyname-string-keyvalue---promiserowobject--null--undefined)
   - [table#has() - Check if a value exists](#haskeyname-string-keyvalue---promiseboolean)
+  - table#filter() - Carry out complex operations on data
   - [table#delete() - Delete row(s) based on a value](#deletekeyname-string-keyvalue---promisevoid)
-  - [table#toArray() -  Convert entire table to an array](#toarray---promisearrayofrowobjects)
 - [Database#close()](#databaseclose)
 
 
@@ -157,14 +156,16 @@ Table after Snippet 2:
 | :--: | :------: | :--------: | :--------------: | :----: |
 |  1   | John Doe | 1234567890 | 8 Johnstown Road | false  |
 
-### .get(keyName `string`, keyValue) -> `Promise<rowObject | null | undefined>`
+### .get(keyName `string`, keyValue, fetchAll? `boolean`) -> `Promise<rowObject | null | undefined>`
 
-Retrieve data from the table with the supplied key data. Returns the first row if a match is found else `null` or `undefined`.
+Retrieve data from the table with the supplied key data. If fetchAll is `true` it returns all the row(s) where the key matches else only the first row. If no key matches then `null`, `undefined` or `[]`(fetchAll is `true`) is returned.
 
 ```typescript
 const x = await table.get("id", 1);
 console.log(x.address);   // Obere Str. 57
 ```
+
+To perform more complex queries based on conditions to retrieve data, jump to table#filter().
 
 ### .has(keyName `string`, keyValue) -> `Promise<boolean>`
 
@@ -175,20 +176,42 @@ const x = await table.has("name", "John Doe");
 console.log(x);   // true
 ```
 
+### .filter(options) -> `Promise<any[] | number | null | undefined>`
+
+Carry out complex operations easily with lot of options to configure your query. All the properties are optional and if an empty object is passed, the entire table is returned in the form of array of rows.
+
+- options.condition `string`: Any valid javascript expression can be used such as comparing column names with their values using [comparison](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Expressions_and_Operators#comparison_operators) or [logical](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Expressions_and_Operators#logical_operators) operators. See the examples to get an idea.
+- options.fromKeys `keyName[]`: The columns which will be selected specifically.
+- options.unique `boolean`: If `true` then duplicate rows will be ignored. (Default is `false`).
+- options.operation: Perform various operations on a selected column.
+  - `"Min"`: Minimum of all the values in a column.
+  - `"Max"`: Maximum from all the values in a column.
+  - `"Avg"`: Average of all the values in a column.
+  - `"Sum"`: Summation of all the values in a column.
+  - `"Count"`: Returns count of all the rows returned by the query. (Or you may use the `length` property of the resultant array)
+- options.sort `{keyName: string, type: "Ascending"|"Descending"}[]`: Array of object(s) having column name and the way they should be sorted.
+- options.limit `number`: Limit the amount of rows to return.
+
+```typescript
+// To get names of first 3 persons for whom the condition matches and sort them in ascending order.
+const x = await table.filter({
+    condition: "value < 150000 && area === 'country'",
+    sort: [{ keyName: "owner_name", type: "Ascending" }],
+    limit: 3
+}) as any[];
+console.log(x.map(a => a.owner_name).join(", "));
+```
+
+For more ideas on how to use the filter for various purposes, check out the examples.
+
+> CAUTION: You may construct such a query which isn't supported by SQLite and would hence throw and error.
+
 ### .delete(keyName `string`, keyValue) -> `Promise<void>`
 
 Deletes the row(s) where ever the supplied key data matches.
 
 ```typescript
 await table.delete("name", "John Doe");
-```
-
-### .toArray() -> `Promise<arrayOfrowObjects>`
-
-Retrieves all the rows from the current table and returns them in the form of an array containing row objects.
-
-```typescript
-await table.toArray();
 ```
 
 

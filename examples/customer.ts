@@ -40,14 +40,14 @@ await table.set([
 
 // Retrieving a value
 const x = await table.get("id", 1);
-console.log(x.address);   // Obere Str. 57
+console.log(x?.address);   // Obere Str. 57
 
 // Updating specific value(s) of a particular "id"
 await table.set({ id: 1, address: "8 Johnstown Road" });
 
 // Retrieving the new value
 const y = await table.get("id", 1);
-console.log(y.address);   // 8 Johnstown Road
+console.log(y?.address);   // 8 Johnstown Road
 
 // Closing the database after all tasks are done
 db.close();
