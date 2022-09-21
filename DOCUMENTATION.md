@@ -10,7 +10,7 @@
   - [table#set() - Insert/Update data to table](#set-----promisevoid)
   - [table#get() - Retrieve data from table](#getkeyname-string-keyvalue---promiserowobject--null--undefined)
   - [table#has() - Check if a value exists](#haskeyname-string-keyvalue---promiseboolean)
-  - [table#filter() - Carry out complex operations on data](#filteroptions---promiseany--number--null--undefined)
+  - [table#filter() - Carry out complex operations on data](#filteroptions---promiseany)
   - [table#delete() - Delete row(s) based on a value](#deletekeyname-string-keyvalue---promisevoid)
 - [Database#close()](#databaseclose)
 
@@ -165,7 +165,7 @@ const x = await table.get("id", 1);
 console.log(x.address);   // Obere Str. 57
 ```
 
-To perform more complex queries based on conditions to retrieve data, jump to [table#filter()](#filteroptions---promiseany--number--null--undefined).
+To perform more complex queries based on conditions to retrieve data, jump to [table#filter()](#filteroptions---promiseany).
 
 ### .has(keyName `string`, keyValue) -> `Promise<boolean>`
 
