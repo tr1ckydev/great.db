@@ -10,7 +10,7 @@
   - [table#set() - Insert/Update data to table](#set-----promisevoid)
   - [table#get() - Retrieve data from table](#getkeyname-string-keyvalue---promiserowobject--null--undefined)
   - [table#has() - Check if a value exists](#haskeyname-string-keyvalue---promiseboolean)
-  - table#filter() - Carry out complex operations on data
+  - [table#filter() - Carry out complex operations on data](#filteroptions---promiseany--number--null--undefined)
   - [table#delete() - Delete row(s) based on a value](#deletekeyname-string-keyvalue---promisevoid)
 - [Database#close()](#databaseclose)
 
@@ -165,7 +165,7 @@ const x = await table.get("id", 1);
 console.log(x.address);   // Obere Str. 57
 ```
 
-To perform more complex queries based on conditions to retrieve data, jump to table#filter().
+To perform more complex queries based on conditions to retrieve data, jump to [table#filter()](#filteroptions---promiseany--number--null--undefined).
 
 ### .has(keyName `string`, keyValue) -> `Promise<boolean>`
 
@@ -176,11 +176,11 @@ const x = await table.has("name", "John Doe");
 console.log(x);   // true
 ```
 
-### .filter(options) -> `Promise<any[] | number | null | undefined>`
+### .filter(options) -> `Promise<any>`
 
 Carry out complex operations easily with lot of options to configure your query. All the properties are optional and if an empty object is passed, the entire table is returned in the form of array of rows.
 
-- options.condition `string`: Any valid javascript expression can be used such as comparing column names with their values using [comparison](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Expressions_and_Operators#comparison_operators) or [logical](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Expressions_and_Operators#logical_operators) operators. See the examples to get an idea.
+- options.condition `string`: Any valid javascript expression can be used such as comparing column names with their values using [comparison](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Expressions_and_Operators#comparison_operators) or [logical](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Expressions_and_Operators#logical_operators) operators. See the example below.
 - options.fromKeys `keyName[]`: The columns which will be selected specifically.
 - options.unique `boolean`: If `true` then duplicate rows will be ignored. (Default is `false`).
 - options.operation: Perform various operations on a selected column.
@@ -188,8 +188,8 @@ Carry out complex operations easily with lot of options to configure your query.
   - `"Max"`: Maximum from all the values in a column.
   - `"Avg"`: Average of all the values in a column.
   - `"Sum"`: Summation of all the values in a column.
-  - `"Count"`: Returns count of all the rows returned by the query. (Or you may use the `length` property of the resultant array)
-- options.sort `{keyName: string, type: "Ascending"|"Descending"}[]`: Array of object(s) having column name and the way they should be sorted.
+  - `"Count"`: Returns count of all the rows returned by the query (or, you may use the `length` property of the resultant array).
+- options.sort `{ keyName: string, type: "Ascending"|"Descending" }[]`: Array of object(s) having column name and the way they should be sorted.
 - options.limit `number`: Limit the amount of rows to return.
 
 ```typescript
@@ -204,7 +204,7 @@ console.log(x.map(a => a.owner_name).join(", "));
 
 For more ideas on how to use the filter for various purposes, check out the examples.
 
-> CAUTION: You may construct such a query which isn't supported by SQLite and would hence throw and error.
+> ⚠️ CAUTION: You might construct such a query which isn't supported by SQLite which would hence throw an error.
 
 ### .delete(keyName `string`, keyValue) -> `Promise<void>`
 
