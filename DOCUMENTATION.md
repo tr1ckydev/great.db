@@ -8,7 +8,7 @@
 - [Database#table()](#databasetablename-schema---table)
   - [table#name - Name of the table](#name---string)
   - [table#set() - Insert/Update data to table](#set-----promisevoid)
-  - [table#get() - Retrieve data from table](#getkeyname-string-keyvalue---promiserowobject--null--undefined)
+  - [table#get() - Retrieve data from table](#getkeyname-string-keyvalue-fetchall-boolean---promiserowobject--null--undefined)
   - [table#has() - Check if a value exists](#haskeyname-string-keyvalue---promiseboolean)
   - [table#filter() - Carry out complex operations on data](#filteroptions---promiseany)
   - [table#delete() - Delete row(s) based on a value](#deletekeyname-string-keyvalue---promisevoid)
