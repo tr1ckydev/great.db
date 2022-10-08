@@ -30,6 +30,7 @@ export default class Table<T extends { [s: string]: any; }>{
     }
     async filter(options: Partial<{
         condition: string,
+        pattern: string,
         fromKeys: (keyof T)[],
         unique: boolean,
         operation: "Min" | "Max" | "Avg" | "Sum" | "Count",
@@ -42,6 +43,7 @@ export default class Table<T extends { [s: string]: any; }>{
             + (options.operation ? `${options.operation}(${what}) AS result` : what)
             + ` FROM ${this.name}`
             + (options.condition ? ` WHERE ${this.parseCondition(options.condition)}` : "")
+            + (options.pattern ? ` LIKE ${options.pattern}` : "")
             + (options.sort ? ` ORDER BY ${options.sort?.map(x => `${x.keyName as string} ${x.type === "Ascending" ? "ASC" : "DESC"}`).join(", ")}` : "")
             + (options.limit ? ` LIMIT ${options.limit}` : "");
         const res = this.db.prepare(finalQuery).all();

@@ -23,8 +23,8 @@ export namespace GreatDB {
                     break;
             }
         }
-        table<T>(name: string, schema: { parsed: string; schema: T }) {
-            return new Table<Partial<T>>(name, schema.parsed, this.db);
+        table<T extends { [s: string]: any; }>(name: string, schema: { parsed: string; schema: T }) {
+            return new Table<T>(name, schema.parsed, this.db);
         }
         close() {
             this.db.close();

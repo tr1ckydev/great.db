@@ -25,7 +25,7 @@ export namespace Schema {
             }
             parsed += (key + " " + SQLDataType + ", ");
         }
-        return { parsed: parsed.slice(0, -2), schema };
+        return { parsed: parsed.slice(0, -2), schema: {} as Partial<T> };
     }
     export const Presets = {
         KeyValue: Schema.Create({ key: DataType.String, value: DataType.String }),
