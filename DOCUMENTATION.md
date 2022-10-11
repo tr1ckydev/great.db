@@ -12,7 +12,7 @@
   - [table#has() - Check if a value exists](#haskeyname-string-keyvalue---promiseboolean)
   - [table#filter() - Carry out complex operations on data](#filteroptions---promiseany)
   - [table#delete() - Delete row(s) based on a value](#deletekeyname-string-keyvalue---promisevoid)
-  - table#executeQuery() - Execute SQL code directly
+- [Database#executeQuery()]()
 - [Database#close()](#databaseclose)
 
 
