@@ -50,4 +50,4 @@ const y = await table.get("id", 1);
 console.log(y?.address);   // 8 Johnstown Road
 
 // Closing the database after all tasks are done
-db.close();
+await db.close();

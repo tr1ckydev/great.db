@@ -28,4 +28,4 @@ const y = await table.get("key", "John Doe");
 console.log(y?.value);   // 9 Hawthorne St.
 
 // Closing the database after all tasks are done
-db.close();
+await db.close();

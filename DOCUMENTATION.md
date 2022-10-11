@@ -12,6 +12,7 @@
   - [table#has() - Check if a value exists](#haskeyname-string-keyvalue---promiseboolean)
   - [table#filter() - Carry out complex operations on data](#filteroptions---promiseany)
   - [table#delete() - Delete row(s) based on a value](#deletekeyname-string-keyvalue---promisevoid)
+  - table#executeQuery() - Execute SQL code directly
 - [Database#close()](#databaseclose)
 
 
@@ -158,7 +159,7 @@ Table after Snippet 2:
 
 ### .get(keyName `string`, keyValue, fetchAll? `boolean`) -> `Promise<rowObject | null | undefined>`
 
-Retrieve data from the table with the supplied key data. If fetchAll is `true` it returns all the row(s) where the key matches else only the first row. If no key matches then `null`, `undefined` or `[]`(fetchAll is `true`) is returned.
+Retrieves data from the table with the supplied key data. If fetchAll is `true` it returns all the row(s) where the key matches else only the first row. If no key matches then `null`, `undefined` or `[]`(fetchAll is `true`) is returned.
 
 ```typescript
 const x = await table.get("id", 1);
@@ -181,6 +182,7 @@ console.log(x);   // true
 Carry out complex operations easily with lot of options to configure your query. All the properties are optional and if an empty object is passed, the entire table is returned in the form of array of rows.
 
 - options.condition `string`: Any valid javascript expression can be used such as comparing column names with their values using [comparison](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Expressions_and_Operators#comparison_operators) or [logical](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Expressions_and_Operators#logical_operators) operators. See the example below.
+- options.pattern `string`: Search for data in a column, based on a specific pattern. [Learn more](https://www.w3schools.com/sql/sql_like.asp).
 - options.fromKeys `keyName[]`: The columns which will be selected specifically.
 - options.unique `boolean`: If `true` then duplicate rows will be ignored. (Default is `false`).
 - options.operation: Perform various operations on a selected column.
@@ -216,10 +218,16 @@ await table.delete("name", "John Doe");
 
 
 
+## Database#executeQuery(query `string`) -> `Promise<any>`
+
+Executes the provided SQL query directly on the current table to perform your custom operation. If no data is returned by the query, `null` is returned.
+
+
+
 ## Database#close()
 
 ```typescript
-db.close();
+await db.close();
 ```
 
 To close the currently working database after all the tasks have been done. Executing any operation further will result into an error.

@@ -1,11 +1,12 @@
 {
   "name": "great.db",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "⚡ A powerful, human-friendly database library for JavaScript using SQLite.",
   "main": "dist/index.js",
   "type": "module",
   "scripts": {
-    "build": "tsc -p tsconfig.build.json"
+    "build": "tsc -p tsconfig.build.json",
+    "shell": "bun tests/shell.ts"
   },
   "files": [
     "dist",

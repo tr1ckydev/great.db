@@ -19,8 +19,8 @@ const table = db.table("homes", homesSchema);
 
 const a = await table.filter({
     condition: "area !== 'suburbs' && value > 180000",
-    limit: 5,
-    sort: [{ keyName: "value", type: "Ascending" }]
+    sort: [{ keyName: "value", type: "Ascending" }],
+    limit: 5
 }) as any[];
 console.log(a);
 
@@ -40,4 +40,4 @@ const c = await table.filter({
 console.log(c);
 
 // Closing the database after all tasks are done
-db.close();
+await db.close();

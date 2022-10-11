@@ -26,7 +26,19 @@ export namespace GreatDB {
         table<T extends { [s: string]: any; }>(name: string, schema: { parsed: string; schema: T }) {
             return new Table<T>(name, schema.parsed, this.db);
         }
-        close() {
+        async executeQuery(query: string) {
+            try {
+                const res = this.db.prepare(query).all();
+                return !res ? null : res;
+            } catch (err) {
+                //@ts-ignore
+                if (err.message === "This statement does not return data. Use run() instead") {
+                    this.db.exec(query);
+                    return null;
+                } else throw err;
+            }
+        }
+        async close() {
             this.db.close();
         }
     }
