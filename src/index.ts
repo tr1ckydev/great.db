@@ -1,8 +1,6 @@
 import Table from "./table.js";
 
-const SQLite = process.argv[0] === "bun"
-    ? require("bun:sqlite").default //@ts-ignore
-    : (await import("better-sqlite3")).default;
+const SQLite = (await import(process.isBun ? "bun:sqlite" : "better-sqlite3")).default;
 
 export namespace GreatDB {
     export enum Type { Disk, Memory }
