@@ -13,9 +13,9 @@
   - [table#filter() - Carry out complex operations on data](#filteroptions---promiseany)
   - [table#delete() - Delete row(s) based on a value](#deletekeyname-string-keyvalue---promisevoid)
 - [Database#executeQuery()](#databaseexecutequeryquery-string---promiseany)
-- Database#serialize()
-- Database#clone()
-- Database#backup()
+- [Database#serialize()](#databaseserialize---buffer--uint8array)
+- [Database#clone()](#databaseclone---greatdbdatabase)
+- [Database#backup()](#databasebackupfilename-string-location-string---promisevoid)
 - [Database#close()](#databaseclose)
 
 
