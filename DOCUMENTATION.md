@@ -13,6 +13,9 @@
   - [table#filter() - Carry out complex operations on data](#filteroptions---promiseany)
   - [table#delete() - Delete row(s) based on a value](#deletekeyname-string-keyvalue---promisevoid)
 - [Database#executeQuery()](#databaseexecutequeryquery-string---promiseany)
+- Database#serialize()
+- Database#clone()
+- Database#backup()
 - [Database#close()](#databaseclose)
 
 
@@ -37,13 +40,15 @@
 
 
 
-## new Database(config) -> `GreatDB.Database`
+## new Database(*config*) -> `GreatDB.Database`
 
 - `config.type`: The following options are accepted.
   - `GreatDB.Type.Disk`: To create/open a sqlite database file.
   - `GreatDB.Type.Memory`: To create an in-memory database. (If you have chosen this, then the following options aren't required)
+  - `GreatDB.Type.Serialized`: To create database from another previously serialized database. (Generally you would use Database#clone)
 - `config.name`: The name of the database file.
 - `config.location?`: The path where the database file will be stored/opened from. If not provided, the root directory of your project will be chosen by default.
+- `config.data`: (Only for Serialized type) A Buffer or Uint8Array serialized version of a database.
 
 ```typescript
 import { GreatDB } from "great.db";
@@ -79,7 +84,7 @@ The following datatypes are available when creating a schema.
 
 ```typescript
 // Example
-import { Schema } from "great.db";
+import { Schema, DataType } from "great.db";
 const customerSchema = Schema.Create({
     id: DataType.AutoIncrement,
     name: DataType.String,
@@ -93,14 +98,16 @@ const customerSchema = Schema.Create({
 
 Some commonly used presets are available to save your time in creating a schema for it.
 
-- KeyValue
+- `KeyValue`
 
   | key `String` | value `String` |
   | :----------: | :------------: |
 
+- More coming soon...
 
 
-## Database#table(name, schema) -> `Table`
+
+## Database#table(*name, schema*) -> `Table`
 
 Creates/Opens a table from the database with the name provided along with the schema created earlier or a preset.
 
@@ -157,7 +164,7 @@ Table after Snippet 2:
 | :--: | :------: | :--------: | :--------------: | :----: |
 |  1   | John Doe | 1234567890 | 8 Johnstown Road | false  |
 
-### .get(keyName `string`, keyValue, fetchAll? `boolean`) -> `Promise<rowObject | null | undefined>`
+### .get(*keyName* `string`, *keyValue*, *fetchAll?* `boolean`) -> `Promise<rowObject | null | undefined>`
 
 Retrieves data from the table with the supplied key data. If fetchAll is `true` it returns all the row(s) where the key matches else only the first row. If no key matches then `null`, `undefined` or `[]`(fetchAll is `true`) is returned.
 
@@ -168,7 +175,7 @@ console.log(x.address);   // Obere Str. 57
 
 To perform more complex queries based on conditions to retrieve data, jump to [table#filter()](#filteroptions---promiseany).
 
-### .has(keyName `string`, keyValue) -> `Promise<boolean>`
+### .has(*keyName* `string`, *keyValue*) -> `Promise<boolean>`
 
 Checks if the supplied key data already exists in the table.
 
@@ -177,7 +184,7 @@ const x = await table.has("name", "John Doe");
 console.log(x);   // true
 ```
 
-### .filter(options) -> `Promise<any>`
+### .filter(*options*) -> `Promise<any>`
 
 Carry out complex operations easily with lot of options to configure your query. All the properties are optional and if an empty object is passed, the entire table is returned in the form of array of rows.
 
@@ -208,7 +215,7 @@ For more ideas on how to use the filter for various purposes, check out the exam
 
 > ⚠️ CAUTION: You might construct such a query which isn't supported by SQLite which would hence throw an error.
 
-### .delete(keyName `string`, keyValue) -> `Promise<void>`
+### .delete(*keyName* `string`, *keyValue*) -> `Promise<void>`
 
 Deletes the row(s) where ever the supplied key data matches.
 
@@ -218,9 +225,42 @@ await table.delete("name", "John Doe");
 
 
 
-## Database#executeQuery(query `string`) -> `Promise<any>`
+## Database#executeQuery(*query* `string`) -> `Promise<any>`
 
 Executes the provided SQL query directly on the current table to perform your custom operation. If no data is returned by the query, `null` is returned.
+
+```typescript
+const res = await db.executeQuery("some sql query");
+```
+
+
+
+## Database#serialize() -> `Buffer | Uint8Array`
+
+Serializes the current database and returns `Buffer` if you are using `better-sqlite3` or `Uint8Array` if using bun:sqlite.
+
+
+
+## Database#clone() -> `GreatDB.Database`
+
+Creates a clone of the current database by serializing it first and returning a new `GreatDB.Database` instance of it. Changes to the cloned database doesn't affect the original one.
+
+```typescript
+const db2 = db1.clone();
+```
+
+
+
+## Database#backup(*filename* `string`, *location*? `string`) -> `Promise<void>`
+
+Creates a hard copy on your disk of the current database i.e. cloning the current database contents into a `.sqlite` file which will be created on your disk. Useful for creating hard copy of an in-memory database or just creating a timely backup of the database.
+
+- filename: Name of your database file which you want to create.
+- location: (Optional) The path where you want to store the database file. If not mentioned, the current working directory will be chosen by default.
+
+```typescript
+await db.backup("db_backup");
+```
 
 
 

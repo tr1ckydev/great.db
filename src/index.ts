@@ -3,13 +3,14 @@ import Table from "./table.js";
 const SQLite = (await import(process.isBun ? "bun:sqlite" : "better-sqlite3")).default;
 
 export namespace GreatDB {
-    export enum Type { Disk, Memory }
+    export enum Type { Disk, Memory, Serialized }
     export enum Mode { ReadOnly, ReadWrite }
     interface ConfigDisk { type: Type.Disk, name: string, location?: string }
     interface ConfigMemory { type: Type.Memory }
+    interface ConfigSerialized { type: Type.Serialized, data: Buffer | Uint8Array }
     export class Database {
         private readonly db;
-        constructor(config: ConfigDisk | ConfigMemory) {
+        constructor(config: ConfigDisk | ConfigMemory | ConfigSerialized) {
             switch (config.type) {
                 case Type.Disk:
                     this.db = new SQLite(
@@ -19,6 +20,10 @@ export namespace GreatDB {
                 case Type.Memory:
                     this.db = new SQLite(":memory:");
                     break;
+                case Type.Serialized:
+                    this.db = new SQLite(config.data);
+                    break;
+                default: throw Error("Unknown type. Use 'GreatDB.Type' only.")
             }
         }
         table<T extends { [s: string]: any; }>(name: string, schema: { parsed: string; schema: T }) {
@@ -34,6 +39,20 @@ export namespace GreatDB {
                     this.db.exec(query);
                     return null;
                 } else throw err;
+            }
+        }
+        serialize() {
+            return this.db.serialize() as Buffer | Uint8Array;
+        }
+        clone() {
+            return new Database({ type: Type.Serialized, data: this.serialize() });
+        }
+        async backup(filename: string, location = process.cwd()) {
+            const path = location + filename + ".sqlite";
+            if (process.isBun) {
+                await Bun.write(path, this.serialize());
+            } else {
+                await this.db.backup(path);
             }
         }
         async close() {
