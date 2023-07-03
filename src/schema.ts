@@ -4,12 +4,12 @@ export const DataType = {
     BigInt: BigInt(0),
     Boolean: false,
     Uint8Array: new Uint8Array(),
-    Buffer: Buffer.from(""),
+    Buffer: globalThis.Buffer?.from(""),
     AutoIncrement: 1,
 };
 
 export namespace Schema {
-    export function Create<T extends { [s: string]: string | number | bigint | boolean | Uint8Array | Buffer }>(schema: T) {
+    export function Create<T extends { [s: string]: string | number | bigint | boolean | Uint8Array | Buffer; }>(schema: T) {
         let parsed = "", SQLDataType = "";
         for (const [key, value] of Object.entries(schema)) {
             switch (value) {
@@ -18,10 +18,10 @@ export namespace Schema {
                 case BigInt(0): SQLDataType = "BIGINT"; break;
                 case false: SQLDataType = "BOOLEAN"; break;
                 case new Uint8Array():
-                case Buffer.from(""):
+                case globalThis.Buffer?.from(""):
                     SQLDataType = "BLOB"; break;
                 case 1: SQLDataType = "INTEGER PRIMARY KEY AUTOINCREMENT"; break;
-                default: throw Error("Unknown datatype in schema.");
+                default: throw Error("error: Unknown datatype in schema. Use 'DataType' only!");
             }
             parsed += (key + " " + SQLDataType + ", ");
         }

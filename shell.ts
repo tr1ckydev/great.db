@@ -1,4 +1,4 @@
-import { GreatDB } from "../src";
+import { GreatDB } from "./src";
 
 const db = new GreatDB.Database({ type: GreatDB.Type.Memory });
 console.log("Great.DB live SQLite shell (in-memory database)\nType EXIT to terminate.\n");
