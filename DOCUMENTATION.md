@@ -50,7 +50,7 @@
 - ### Using `deno` runtime
 
   ```typescript
-  import { GreatDB } from "npm:great.db";
+  import { GreatDB } from "https://esm.sh/great.db";
   ```
 
   Directly import it in your project to let deno autoinstall `great.db` and `x/sqlite3`.
