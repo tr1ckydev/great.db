@@ -1,7 +1,11 @@
 # Table of Contents
 
 - [Installation](#installation)
-- [GreatDB#Database()](#new-databaseconfig---greatdbdatabase)
+  - [Using bun runtime](#using-bun-runtime)
+  - [Using node.js runtime](#using-nodejs-runtime)
+  - [Using deno runtime](#using-deno-runtime)
+
+- [GreatDB#Database()](#greatdbdatabaseconfig---greatdbdatabase)
   - [Database#table()](#databasetablename-string-schema---table)
     - [table#name](#name---string)
     - [table#get()](#getkeyname-string-keyvalue-any-fetchall-boolean---rowobject--rowobject--null)
@@ -11,6 +15,8 @@
     - [table#filter()](#filteraction-select--delete-options---any)
   - [Database#deleteTable()](#databasedeletetablename-string---void)
   - [Database#pragma()](#databasepragmaname-string)
+    - [pragma#get()](#get---any)
+    - [pragma#set()](#setvalue-string---void)
   - [Database#executeQuery()](#databaseexecutequeryquery-string---any--null)
   - [Database#serialize()](#databaseserialize---buffer--uint8array)
   - [Database#clone()](#databaseclone---greatdbdatabase)
@@ -43,11 +49,13 @@
   
 - ### Using `deno` runtime
 
-  ```
+  ```typescript
   import { GreatDB } from "npm:great.db";
   ```
 
   Directly import it in your project to let deno autoinstall `great.db` and `x/sqlite3`.
+  
+  > **Note:** When using great.db in Deno, `-A --unstable` flags need to be passed for `x/sqlite3` to work. [Learn more](https://github.com/denodrivers/sqlite3#usage).
 
 
 
@@ -235,7 +243,7 @@ Executes the provided SQL query directly on the database to perform your custom 
 
 Serializes the current database and returns `Buffer` (`better-sqlite3`) or `Uint8Array` (`bun:sqlite`).
 
-> **Note**: Not supported in Deno.
+> **Warning**: Not supported in Deno.
 
 
 
@@ -243,7 +251,7 @@ Serializes the current database and returns `Buffer` (`better-sqlite3`) or `Uint
 
 Creates a clone of the current database by serializing it first and returning a new `GreatDB.Database` instance of it. Changes to the cloned database doesn't affect the original one.
 
-> **Note**: Not supported in Deno.
+> **Warning**: Not supported in Deno.
 
 
 
@@ -254,7 +262,7 @@ Creates a hard copy on your disk of the current database i.e. cloning the curren
 - filename: Name of your new database file (with extension).
 - location: (Optional) The path where you want to store the database file. If not mentioned, the current working directory will be chosen by default.
 
-> **Note**: Not supported in Deno.
+> **Warning**: Not supported in Deno.
 
 
 
@@ -274,7 +282,7 @@ Returns the version of SQLite being used.
 
 Schema is a way to define the columns and their datatypes of your table.
 
-### Create( {...} )
+### Create( *{...}* )
 
 Create a new schema with the column names along with their datatypes which will be later passed on to the [Database#table](#databasetablename-schema---table).
 
